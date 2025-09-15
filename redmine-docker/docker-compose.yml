@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:8.0
+    platform: linux/arm64/v8
+    container_name: redmine-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: redmine
+      MYSQL_USER: ${REDMINE_DB_USERNAME}
+      MYSQL_PASSWORD: ${REDMINE_DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - redmine-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  redmine:
+    image: redmine:5.0
+    platform: linux/arm64/v8
+    container_name: ${REDMINE_HOST}
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      REDMINE_DB_MYSQL: mysql
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: ${REDMINE_DB_USERNAME}
+      REDMINE_DB_PASSWORD: ${REDMINE_DB_PASSWORD}
+      RAILS_ENV: ${REDMINE_ENV}
+      REDMINE_SECRET_KEY_BASE: ${REDMINE_SECRET_KEY_BASE}
+    volumes:
+      - redmine-data:/usr/src/redmine/files
+      - redmine-plugins:/usr/src/redmine/plugins
+    ports:
+      - "${REDMINE_PORT}:3000"
+    networks:
+      - redmine-network
+
+networks:
+  redmine-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redmine-data:
+  redmine-plugins:

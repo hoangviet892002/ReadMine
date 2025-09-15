@@ -1,0 +1,12 @@
+database:
+  adapter: mysql2
+  database: redmine
+  host: mysql
+  username: redmine_user
+  password: redmine_password
+  encoding: utf8
+  # Uncomment the following line to enable SSL
+  # ssl: true
+
+# Additional configuration options can be added below
+# e.g., email settings, issue tracking settings, etc.
