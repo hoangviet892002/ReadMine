@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    platform: linux/arm64/v8
+    platform: linux/arm64
     container_name: redmine-mysql
     restart: always
     environment:
@@ -19,7 +19,7 @@ services:
 
   redmine:
     image: redmine:5.0
-    platform: linux/arm64/v8
+    platform: linux/arm64
     container_name: ${REDMINE_HOST}
     restart: always
     depends_on:
