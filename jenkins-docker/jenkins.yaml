@@ -1,0 +1,48 @@
+jenkins:
+  systemMessage: "Jenkins được cấu hình tự động"
+  numExecutors: 2
+  scmCheckoutRetryCount: 3
+  mode: NORMAL
+  primaryView: "All"
+
+security:
+  remotingSecurity:
+    enabled: true
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"
+    adminAddress: "admin@example.com"
+  globalLibraries:
+    libraries:
+      - name: "shared-library"
+        defaultVersion: "master"
+        implicit: false
+        allowVersionOverride: true
+        includeInChangesets: true
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/your-org/shared-library.git"
+
+jobs:
+  - script: >
+      pipelineJob('hello-world') {
+        definition {
+          cps {
+            script('''
+              pipeline {
+                agent any
+                stages {
+                  stage('Hello') {
+                    steps {
+                      echo 'Hello World!'
+                    }
+                  }
+                }
+              }
+            ''')
+          }
+        }
+      }
