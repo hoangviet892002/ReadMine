@@ -94,3 +94,32 @@ docker-compose ps
 docker-compose down -v
 docker-compose up -d
 ```
+
+## Restart Jenkins
+
+### Cách 1: Restart container Jenkins
+
+```bash
+cd jenkins-docker
+docker-compose restart jenkins
+# hoặc (Compose V2)
+# docker compose restart jenkins
+```
+
+### Cách 2: Dừng và chạy lại Jenkins (không xóa dữ liệu)
+
+```bash
+cd jenkins-docker
+docker-compose down
+docker-compose up -d
+# hoặc
+# docker compose down
+# docker compose up -d
+```
+
+### Cách 3: Restart từ UI Jenkins
+
+- Truy cập Manage Jenkins → System → nhấn “Restart” (hoặc mở `http://<host>:8080/restart`).
+- Có thể cần bật quyền restart: Manage Jenkins → Script Console → `Jenkins.instance.doSafeRestart()`.
+
+Lưu ý: Dữ liệu Jenkins được lưu trong volume `jenkins_home`, các thao tác restart ở trên không làm mất dữ liệu.
